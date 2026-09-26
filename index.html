@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ultimate PvP Vol.2</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, "Noto Sans JP", sans-serif;
+    background:
+        radial-gradient(circle at 50% 0%, #172c3a 0%, #080c11 45%, #040506 100%);
+    color: white;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    padding: 42px 15px 35px;
+    background: linear-gradient(135deg, rgba(0,229,255,.12), rgba(0,0,0,.3));
+    border-bottom: 1px solid rgba(0,229,255,.35);
+}
+
+.logo {
+    font-size: clamp(30px, 8vw, 55px);
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 25px rgba(0,229,255,.35);
+}
+
+.logo span {
+    color: #00e5ff;
+}
+
+.vol {
+    margin-top: 8px;
+    color: #aab5bd;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.container {
+    width: min(900px, 94%);
+    margin: auto;
+    padding: 30px 0 60px;
+}
+
+.search-area {
+    margin-bottom: 35px;
+}
+
+.search-title {
+    margin-bottom: 10px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.search-box {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1px solid #303941;
+    border-radius: 12px;
+    background: rgba(12,17,22,.95);
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-box:focus {
+    border-color: #00e5ff;
+    box-shadow: 0 0 15px rgba(0,229,255,.15);
+}
+
+.search-box::placeholder {
+    color: #69737a;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-size: 25px;
+}
+
+.section-line {
+    flex: 1;
+    height: 1px;
+    background: #293139;
+}
+
+.best4 {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 45px;
+}
+
+.player {
+    display: grid;
+    grid-template-columns: 75px 1fr;
+    align-items: center;
+    min-height: 82px;
+    padding: 15px 20px;
+    background: linear-gradient(110deg, #111820, #0c1116);
+    border: 1px solid #29323a;
+    border-radius: 14px;
+    transition: .2s;
+}
+
+.player:hover {
+    transform: translateY(-3px);
+    border-color: #00e5ff;
+    box-shadow: 0 5px 25px rgba(0,229,255,.08);
+}
+
+/* 1位 */
+.rank1 {
+    border: 2px solid rgba(255,215,0,.7);
+    background: linear-gradient(110deg, rgba(255,215,0,.13), #0c1116);
+}
+
+/* 2位 */
+.rank2 {
+    border-color: rgba(192,192,192,.6);
+}
+
+/* 3位 */
+.rank3 {
+    border-color: rgba(205,127,50,.6);
+}
+
+.rank {
+    font-size: 28px;
+    font-weight: 900;
+    text-align: center;
+}
+
+.name {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.place {
+    margin-top: 5px;
+    color: #737e86;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.participants {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.participant {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: #0d1318;
+    border: 1px solid #252d34;
+    border-radius: 11px;
+    transition: .2s;
+}
+
+.participant:hover {
+    border-color: #00e5ff;
+    transform: translateY(-2px);
+}
+
+.participant-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #182128;
+    color: #00e5ff;
+    font-weight: bold;
+}
+
+.participant-name {
+    font-weight: bold;
+}
+
+.no-result {
+    display: none;
+    text-align: center;
+    padding: 30px;
+    color: #777;
+}
+
+footer {
+    padding: 35px 10px;
+    text-align: center;
+    color: #59636a;
+    font-size: 12px;
+    border-top: 1px solid #171d22;
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        width: 92%;
+    }
+
+    .player {
+        grid-template-columns: 55px 1fr;
+        padding: 14px;
+    }
+
+    .participants {
+        grid-template-columns: 1fr;
+    }
+
+    .rank {
+        font-size: 24px;
+    }
+
+    .name {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ULTIMATE <span>PvP</span>
+    </div>
+
+    <div class="vol">
+        VOL.2
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <!-- 検索 -->
+
+    <div class="search-area">
+
+        <div class="search-title">
+            🔎 プレイヤーを検索
+        </div>
+
+        <input
+            id="search"
+            class="search-box"
+            type="text"
+            placeholder="プレイヤー名を入力..."
+            autocomplete="off"
+        >
+
+    </div>
+
+
+    <!-- BEST 4 -->
+
+    <div class="section-header">
+
+        <h2>🏆 Best 4</h2>
+
+        <div class="section-line"></div>
+
+    </div>
+
+
+    <div class="best4">
+
+        <!-- 1位 かそた -->
+
+        <div
+            class="player rank1 searchable"
+            data-name="かそた"
+        >
+
+            <div class="rank">🥇</div>
+
+            <div>
+
+                <div class="name">
+                    かそた
+                </div>
+
+                <div class="place">
+                    1ST PLACE
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 2位 メルレア -->
+
+        <div
+            class="player rank2 searchable"
+            data-name="メルレア"
+        >
+
+            <div class="rank">🥈</div>
+
+            <div>
+
+                <div class="name">
+                    メルレア
+                </div>
+
+                <div class="place">
+                    2ND PLACE
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 3位 ここあ -->
+
+        <div
+            class="player rank3 searchable"
+            data-name="ここあ"
+        >
+
+            <div class="rank">🥉</div>
+
+            <div>
+
+                <div class="name">
+                    ここあ
+                </div>
+
+                <div class="place">
+                    3RD PLACE
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 4位 Zeeeen -->
+
+        <div
+            class="player searchable"
+            data-name="Zeeeen"
+        >
+
+            <div class="rank">
+                4
+            </div>
+
+            <div>
+
+                <div class="name">
+                    Zeeeen
+                </div>
+
+                <div class="place">
+                    4TH PLACE
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 参加プレイヤー -->
+
+    <div class="section-header">
+
+        <h2>👥 参加プレイヤー</h2>
+
+        <div class="section-line"></div>
+
+    </div>
+
+
+    <div class="participants">
+
+        <div class="participant searchable" data-name="ぬんらる">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">ぬんらる</div>
+        </div>
+
+        <div class="participant searchable" data-name="フォトナ">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">フォトナ</div>
+        </div>
+
+        <div class="participant searchable" data-name="うまあ">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">うまあ</div>
+        </div>
+
+        <div class="participant searchable" data-name="ぎゅうどん">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">ぎゅうどん</div>
+        </div>
+
+        <div class="participant searchable" data-name="はるま">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">はるま</div>
+        </div>
+
+        <div class="participant searchable" data-name="すすむ">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">すすむ</div>
+        </div>
+
+        <div class="participant searchable" data-name="アキュウ">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">アキュウ</div>
+        </div>
+
+        <div class="participant searchable" data-name="たぬぅきだお">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">たぬぅきだお</div>
+        </div>
+
+        <div class="participant searchable" data-name="ゆき">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">ゆき</div>
+        </div>
+
+        <div class="participant searchable" data-name="かと">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">かと</div>
+        </div>
+
+        <div class="participant searchable" data-name="ゆった">
+            <div class="participant-icon">P</div>
+            <div class="participant-name">ゆった</div>
+        </div>
+
+    </div>
+
+
+    <div id="noResult" class="no-result">
+        該当するプレイヤーが見つかりません。
+    </div>
+
+</main>
+
+
+<footer>
+    Ultimate PvP Vol.2<br>
+    © 2026 Ultimate PvP
+</footer>
+
+
+<script>
+
+const search = document.getElementById("search");
+const players = document.querySelectorAll(".searchable");
+const noResult = document.getElementById("noResult");
+
+search.addEventListener("input", function () {
+
+    const keyword =
+        this.value.trim().toLowerCase();
+
+    let found = 0;
+
+    players.forEach(function(player) {
+
+        const name =
+            player.dataset.name.toLowerCase();
+
+        if (
+            keyword === "" ||
+            name.includes(keyword)
+        ) {
+
+            player.style.display = "";
+
+            found++;
+
+        } else {
+
+            player.style.display = "none";
+
+        }
+
+    });
+
+    if (found === 0) {
+        noResult.style.display = "block";
+    } else {
+        noResult.style.display = "none";
+    }
+
+});
+
+</script>
+
+</body>
+</html>
